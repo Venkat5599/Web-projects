@@ -1,0 +1,47 @@
+@font-face {
+    font-family: ride;
+    src: url(./rocket-thunder.script.ttf);
+}
+*{
+    margin:0;
+    padding:0;
+    box-sizing: border-box;
+}
+html,body{
+    overflow: hidden;
+    height:100vh;
+    width:100vw;
+    background-color: black;
+}
+#main{
+    height: 100%;
+    width:100%;
+    background-image: url(https://4kwallpapers.com/images/walls/thumbs_3t/24005.jpg);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    text-align: center;
+    background-image: fixed;
+
+
+}
+h1{
+    font-size: 100px;
+    color:white;
+    font-family: ride;
+
+
+}
+button{
+    font-size: 20px;
+    color: white;
+    border-radius: 20px;
+    padding:20px;
+    background-color: transparent;
+    font-family: ride;
+    font-size: 50px;
+    margin: 550px;
+
+
+}
