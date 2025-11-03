@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Beautiful BMI Calculator</title>
+    <meta name="description" content="A beautiful BMI calculator supporting ft/in and kg/lb with instant results.">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body class="is-loading">
+    <canvas id="shaderBg" class="shader-bg" aria-hidden="true"></canvas>
+    <div id="loadingOverlay" class="loading-overlay" role="status" aria-live="polite" aria-label="Loading">
+      <svg class="sr-only" aria-hidden="true" focusable="false">
+        <defs>
+          <filter id="threshold">
+            <feColorMatrix in="SourceGraphic" type="matrix" values="1 0 0 0 0
+                      0 1 0 0 0
+                      0 0 1 0 0
+                      0 0 0 255 -140" />
+          </filter>
+        </defs>
+      </svg>
+      <div class="gooey" style="filter: url(#threshold)">
+        <span id="gooeyText1" class="gooey-text"></span>
+        <span id="gooeyText2" class="gooey-text"></span>
+      </div>
+    </div>
+    <div class="bg"></div>
+    <main class="container">
+      <header class="header">
+        <h1 aria-label="Body Mass Index Calculator"><span class="accent">BMI</span> Calculator</h1>
+        <p class="subtitle">Compute your Body Mass Index and see your category instantly.</p>
+      </header>
+
+      <section class="card" aria-labelledby="formTitle">
+        <h2 id="formTitle" class="visually-hidden">Enter your information</h2>
+        <form id="bmiForm" novalidate>
+          <div class="grid">
+            <div class="field">
+              <label for="sex">Sex</label>
+              <select id="sex" name="sex" autocomplete="sex">
+                <option value="" selected>Prefer not to say</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label for="age">Age (years)</label>
+              <input id="age" name="age" type="number" inputmode="numeric" min="0" max="120" placeholder="30">
+            </div>
+
+            <div class="field span-2">
+              <label>Height</label>
+              <div class="row">
+                <input id="heightFt" name="heightFt" type="number" inputmode="numeric" min="0" max="8" placeholder="5" aria-label="Height feet">
+                <span class="unit">ft</span>
+                <input id="heightIn" name="heightIn" type="number" inputmode="numeric" min="0" max="11" placeholder="7" aria-label="Height inches">
+                <span class="unit">in</span>
+              </div>
+            </div>
+
+            <div class="field">
+              <label for="weight">Weight</label>
+              <div class="row">
+                <input id="weight" name="weight" type="number" inputmode="decimal" min="0" placeholder="70" aria-describedby="unitHelp">
+                <div class="segmented" role="radiogroup" aria-label="Weight unit">
+                  <input type="radio" id="unitKg" name="unit" value="kg" checked>
+                  <label for="unitKg">kg</label>
+                  <input type="radio" id="unitLb" name="unit" value="lb">
+                  <label for="unitLb">lb</label>
+                </div>
+              </div>
+              <small id="unitHelp" class="hint">Choose kilograms or pounds</small>
+            </div>
+          </div>
+
+          <div class="actions">
+            <button type="submit" class="primary">Calculate BMI</button>
+            <button type="button" id="resetBtn" class="ghost">Reset</button>
+          </div>
+        </form>
+      </section>
+
+      <section class="card results is-hidden" aria-live="polite" aria-atomic="true">
+        <div class="result-header">
+          <h2>Your Result</h2>
+          <div class="value-badge" aria-label="Body Mass Index value">
+            <span id="bmiValue" class="bmi-value" title="Body Mass Index">—</span>
+            <span class="bmi-unit">BMI</span>
+          </div>
+        </div>
+
+        <div class="status-row">
+          <span id="bmiStatus" class="status badge">Fill the form and hit Calculate.</span>
+        </div>
+
+        <div class="meter">
+          <div class="bar" id="bmiBar" style="left:0%"></div>
+          <div class="scale">
+            <span class="scale-label" aria-label="Underweight category">Underweight</span>
+            <span class="scale-label" aria-label="Normal category">Normal</span>
+            <span class="scale-label" aria-label="Overweight category">Overweight</span>
+            <span class="scale-label" aria-label="Obese category">Obese</span>
+          </div>
+        </div>
+        <div class="divider" role="separator" aria-hidden="true"></div>
+        <div id="details" class="details"></div>
+
+        <div id="suggestions" class="suggestions" aria-live="polite"></div>
+      </section>
+
+      <footer class="footer">
+        <p>Stay healthy and fit</p>
+      </footer>
+    </main>
+
+    <script src="script.js"></script>
+  </body>
+  </html>
+
+
