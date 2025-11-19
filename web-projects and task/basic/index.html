@@ -1,121 +1,711 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Solana Airdrop UI</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Beautiful Cricket Scoreboard</title>
+  <style>
+    :root{
+      --bg:#0f1720;
+      --card:#111827;
+      --muted:#9aa6b2;
+      --accent:#4fd1c5;
+      --accent-2:#6c7cff;
+      --glass: rgba(255,255,255,0.03);
+      --danger:#ff6b6b;
+      --surface: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.00));
+      --glass-border: rgba(255,255,255,0.04);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      color-scheme: dark;
+    }
 
-<!-- Google Font -->
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet"/>
+    /* Reset + base */
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      min-height:100vh;
+      background:
+        radial-gradient(1200px 600px at 10% 10%, rgba(108,124,255,0.06), transparent 6%),
+        radial-gradient(900px 500px at 90% 90%, rgba(79,209,197,0.03), transparent 6%),
+        var(--bg);
+      color:#e6eef6;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      padding:28px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
 
-<style>
+    .wrap{
+      width:100%;
+      max-width:1200px;
+      margin:0 auto;
+      display:grid;
+      grid-template-columns: 1fr 360px;
+      gap:22px;
+      align-items:start;
+    }
+
+    /* Header Card */
+    .board{
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border:1px solid var(--glass-border);
+      border-radius:14px;
+      padding:20px;
+      box-shadow: 0 6px 30px rgba(2,6,23,0.6);
+    }
+
+    .header{
+      display:flex;
+      gap:18px;
+      align-items:center;
+      justify-content:space-between;
+      margin-bottom:12px;
+    }
+
+    .match-meta{
+      display:flex;
+      gap:14px;
+      align-items:center;
+    }
+
+    .teams{
+      display:flex;
+      gap:12px;
+      align-items:center;
+    }
+
+    .flag{
+      width:56px;
+      height:56px;
+      border-radius:10px;
+      background:var(--glass);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:28px;
+      box-shadow: inset 0 -6px 18px rgba(0,0,0,0.4);
+    }
+
+    .team-name{
+      font-weight:700;
+      letter-spacing:0.2px;
+    }
+    .match-sub{
+      color:var(--muted);
+      font-size:0.92rem;
+    }
+
+    .score-block{
+      text-align:center;
+      flex:1;
+      margin-left:6px;
+    }
+
+    .score-row{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:20px;
+      margin-top:6px;
+    }
+
+    .runs{
+      font-size:2.8rem;
+      font-weight:800;
+      letter-spacing:0.6px;
+      color:var(--accent-2);
+    }
+
+    .overs{
+      color:var(--muted);
+      font-size:0.92rem;
+    }
+
+    .crr{
+      margin-top:6px;
+      color:var(--muted);
+      font-weight:600;
+    }
+
+    .status{
+      margin-top:8px;
+      color:var(--accent);
+      font-weight:700;
+      display:inline-block;
+      background: rgba(79,209,197,0.06);
+      padding:6px 12px;
+      border-radius:999px;
+      font-size:0.95rem;
+      border:1px solid rgba(79,209,197,0.08);
+    }
+
+    /* grid below header */
+    .grid{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:14px;
+      margin-top:18px;
+    }
+
+    .card{
+      background:var(--card);
+      border-radius:10px;
+      padding:14px;
+      border:1px solid var(--glass-border);
+      display:flex;
+      gap:12px;
+      align-items:center;
+    }
+
+    .player{
+      flex:1;
+    }
+    .player .name{font-weight:700}
+    .player .meta{color:var(--muted); font-size:0.9rem}
+
+    .stat{
+      text-align:right;
+      min-width:110px;
+    }
+    .stat .val{
+      font-weight:800;
+      font-size:1.2rem;
+    }
+    .stat .sub{display:block;color:var(--muted); font-size:0.9rem}
+
+    .partnership{
+      margin-top:12px;
+      color:var(--muted);
+      font-size:0.98rem;
+    }
+
+    .target{
+      margin-top:12px;
+      padding:12px;
+      border-radius:10px;
+      background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0));
+      border:1px solid rgba(255,255,255,0.02);
+      display:flex;
+      gap:16px;
+      align-items:center;
+      justify-content:space-between;
+      font-weight:700;
+    }
+
+    /* Right column (controls) */
+    .controls{
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border:1px solid var(--glass-border);
+      padding:16px;
+      border-radius:12px;
+      height:fit-content;
+    }
+
+    .controls h3{
+      margin:0 0 6px 0;
+      font-size:1.05rem;
+    }
+    .controls p{margin:0;color:var(--muted);font-size:0.92rem;margin-bottom:10px}
+
+    .btn-row{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+      margin-top:8px;
+    }
+
+    button.btn{
+      background:linear-gradient(180deg,var(--accent),var(--accent-2));
+      border:none;
+      color:#041026;
+      padding:10px 12px;
+      border-radius:8px;
+      font-weight:700;
+      cursor:pointer;
+      box-shadow: 0 8px 22px rgba(79,209,197,0.08);
+      transition:transform .12s ease, box-shadow .12s;
+    }
+    button.btn:hover{transform:translateY(-3px); box-shadow: 0 18px 40px rgba(79,209,197,0.08);}
+
+    button.alt{
+      background:transparent;
+      border:1px solid rgba(255,255,255,0.06);
+      color:var(--muted);
+      font-weight:700;
+      padding:8px 10px;
+      border-radius:8px;
+      cursor:pointer;
+    }
+
+    .small{font-size:0.95rem; padding:7px 10px}
+    .danger{background:linear-gradient(180deg,#ff7b7b,#ff6b6b); color:#190808}
+
+    .control-row{display:flex;gap:8px;align-items:center;margin-top:12px}
+    .control-row input[type="number"]{width:80px;padding:8px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:inherit;font-weight:700}
+    .control-row label{color:var(--muted); font-weight:600; font-size:0.9rem}
+
+    .footer-help{margin-top:12px;color:var(--muted); font-size:0.9rem}
+
+    /* responsive */
+    @media (max-width:980px){
+      .wrap{padding:0}
+      .wrap{grid-template-columns:1fr}
+      .controls{order:2;margin-top:12px}
+    }
+
     body {
-        margin: 0;
-        padding: 0;
-        font-family: 'Inter', sans-serif;
-        background: linear-gradient(135deg, #0d0f2d, #1a1d4a);
-        color: white;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        height: 100vh;
+      margin: 0;
+      min-height: 100vh;
+      width: 100vw;
+      overflow: hidden;
+      background: #fff;
+      color: #111;
+      font-family: 'Segoe UI', Arial, sans-serif;
     }
-
-    .card {
-        width: 380px;
-        background: rgba(255, 255, 255, 0.06);
-        padding: 30px;
-        border-radius: 20px;
-        backdrop-filter: blur(20px);
-        box-shadow: 0 0 50px rgba(0,0,0,0.4);
-        text-align: center;
+    .background-svg {
+      position: absolute;
+      inset: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 0;
+      pointer-events: none;
     }
-
-    h2 {
-        margin-bottom: 20px;
-        font-weight: 600;
-        font-size: 26px;
+    .center-content {
+      position: relative;
+      z-index: 1;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
     }
-
-    input {
-        width: 100%;
-        padding: 14px;
-        border-radius: 12px;
-        border: none;
-        outline: none;
-        margin-top: 10px;
-        margin-bottom: 20px;
-        font-size: 16px;
+    .main-title {
+      font-size: 3rem;
+      font-weight: bold;
+      margin-bottom: 2rem;
+      text-align: center;
+      background: linear-gradient(90deg, #111, #555);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
     }
-
-    button {
-        width: 100%;
-        padding: 14px;
-        border: none;
-        border-radius: 12px;
-        background-color: #6366f1;
-        font-size: 17px;
-        font-weight: 600;
-        color: white;
-        cursor: pointer;
-        transition: 0.2s;
+    .custom-btn {
+      padding: 1rem 2.5rem;
+      font-size: 1.2rem;
+      border-radius: 2rem;
+      border: none;
+      background: rgba(255,255,255,0.95);
+      color: #111;
+      font-weight: 600;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+      cursor: pointer;
+      transition: box-shadow 0.3s, transform 0.3s;
     }
-
-    button:hover {
-        background-color: #4f46e5;
+    .custom-btn:hover {
+      box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+      transform: translateY(-2px);
     }
-
-    .status {
-        margin-top: 18px;
-        padding: 10px;
-        font-size: 15px;
-    }
-</style>
+  </style>
 </head>
-
 <body>
+  <svg class="background-svg" viewBox="0 0 696 316" fill="none">
+    <title>Background Paths</title>
+    <!-- Paths will be added by JS -->
+  </svg>
+  <div class="wrap" role="application" aria-label="Cricket scoreboard app">
+    <div class="board" aria-live="polite">
 
-<div class="card">
-    <h2>Solana Airdrop</h2>
+      <div class="header" role="region" aria-label="match header">
+        <div class="match-meta">
+          <div class="teams">
+            <div style="text-align:center">
+              <div class="flag" id="flagA">🇮🇳</div>
+              <div class="team-name" id="teamAName">India</div>
+              <div class="match-sub" id="teamASub">Home</div>
+            </div>
+            <div style="text-align:center">
+              <div class="flag" id="flagB">🇵🇰</div>
+              <div class="team-name" id="teamBName">Pakistan</div>
+              <div class="match-sub" id="teamBSub">Away</div>
+            </div>
+          </div>
+          <div style="margin-left:12px">
+            <div class="match-sub" id="matchType">Test Match • Day 1</div>
+          </div>
+        </div>
 
-    <input id="walletAddress" placeholder="Enter wallet address" />
+        <div style="flex:1" class="score-block">
+          <div style="font-size:0.95rem;color:var(--muted);font-weight:700" id="venue">Eden Gardens</div>
+          <div class="score-row" role="img" aria-label="score">
+            <div class="team-short" style="text-align:right;margin-right:6px">
+              <div class="team-name" id="scoreTeam">IND</div>
+            </div>
+            <div>
+              <div class="runs" id="scoreRuns">212/3</div>
+              <div style="display:flex;justify-content:center;gap:8px;margin-top:6px">
+                <div class="overs" id="scoreOvers">46.4 ov</div>
+                <div class="overs" id="scoreCRR">CRR: 4.57</div>
+              </div>
+            </div>
+          </div>
+          <div class="crr" id="statusText">Good batting conditions • Sunny</div>
+        </div>
 
-    <button onclick="sendAirdrop()">Request Airdrop</button>
+      </div>
 
-    <div class="status" id="status"></div>
-</div>
+      <div class="grid">
+        <!-- Batsmen & Bowling cards -->
+        <div class="card" aria-label="current batsman 1">
+          <div class="player">
+            <div class="name" id="b1Name">R. Sharma</div>
+            <div class="meta" id="b1Meta">Right-hand bat • 30 (48)</div>
+          </div>
+          <div class="stat">
+            <div class="val" id="b1Score">30</div>
+            <span class="sub" id="b1Balls">48b</span>
+          </div>
+        </div>
 
-<script src="https://unpkg.com/@solana/web3.js@latest/lib/index.iife.min.js"></script>
+        <div class="card" aria-label="current batsman 2">
+          <div class="player">
+            <div class="name" id="b2Name">S. Gill</div>
+            <div class="meta" id="b2Meta">Left-hand bat • 72 (89)</div>
+          </div>
+          <div class="stat">
+            <div class="val" id="b2Score">72</div>
+            <span class="sub" id="b2Balls">89b</span>
+          </div>
+        </div>
 
-<script>
-    async function sendAirdrop() {
-        const addressInput = document.getElementById("walletAddress").value.trim();
-        const status = document.getElementById("status");
+        <div class="card" aria-label="bowling">
+          <div class="player">
+            <div class="name" id="bowlName">M. Bumrah</div>
+            <div class="meta" id="bowlMeta">Right-arm fast • 2-45 (8.0)</div>
+          </div>
+          <div class="stat">
+            <div class="val" id="bowlOver">8.0</div>
+            <span class="sub" id="bowlWkts">2 wkts • 45 runs</span>
+          </div>
+        </div>
 
-        if (!addressInput) {
-            status.innerText = "❌ Enter a wallet address!";
-            return;
-        }
+        <div class="card" style="align-items:flex-start">
+          <div style="flex:1">
+            <div style="font-weight:700">Partnership</div>
+            <div class="partnership" id="partnership">60 (102)</div>
+            <div style="height:10px"></div>
+            <div style="font-weight:700">Last Wicket</div>
+            <div class="partnership" id="lastWkt">K. Rahul c Smith b Starc 27 (40)</div>
+          </div>
+        </div>
 
-        try {
-            const connection = new solanaWeb3.Connection(
-                "https://api.devnet.solana.com",
-                "confirmed"
-            );
+        <div style="grid-column:1/-1">
+          <div class="target">
+            <div>
+              <div style="font-size:0.95rem;color:var(--muted)">Target</div>
+              <div style="font-weight:800">Chasing: 300</div>
+            </div>
+            <div style="text-align:right">
+              <div style="font-size:0.95rem;color:var(--muted)">Needed</div>
+              <div style="font-weight:800" id="needed">88 runs in 24.2 overs</div>
+            </div>
+          </div>
+        </div>
 
-            const publicKey = new solanaWeb3.PublicKey(addressInput);
+      </div>
 
-            status.innerText = "⏳ Sending airdrop...";
-            const signature = await connection.requestAirdrop(publicKey, 1e9);
+    </div>
 
-            await connection.confirmTransaction(signature);
+    <!-- Controls -->
+    <aside class="controls" aria-label="controls">
+      <h3>Control Panel</h3>
+      <p>Update the scoreboard manually or enable auto-simulate.</p>
 
-            status.innerHTML = `✅ Airdrop Successful!<br>Signature: ${signature}`;
-        } catch (err) {
-            status.innerText = "❌ Error: " + err.message;
-        }
+      <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+        <button class="btn small" id="add1">+1</button>
+        <button class="btn small" id="add2">+2</button>
+        <button class="btn small" id="add3">+3</button>
+        <button class="btn small" id="add4">+4</button>
+        <button class="btn small" id="add6">+6</button>
+        <button class="alt small" id="wkt">Wkt</button>
+      </div>
+
+      <div class="control-row" style="margin-top:12px">
+        <label for="ballsInput">Balls to add</label>
+        <input id="ballsInput" type="number" min="0" value="1" aria-label="balls to add">
+        <button class="alt small" id="addBall">Add Balls</button>
+      </div>
+
+      <div style="margin-top:12px;border-top:1px dashed rgba(255,255,255,0.03);padding-top:12px">
+        <div style="display:flex;align-items:center;gap:8px;">
+          <button class="alt" id="reset">Reset</button>
+          <button class="alt" id="randomize">Randomize Names</button>
+          <button class="alt small" id="swap">Swap Sides</button>
+        </div>
+      </div>
+
+      <div style="margin-top:12px">
+        <label style="display:block;color:var(--muted);font-weight:700">Simulation</label>
+        <div style="display:flex;gap:8px;margin-top:8px">
+          <button class="btn small" id="simToggle">Start Auto Sim</button>
+          <button class="alt small" id="simStep">Step</button>
+        </div>
+      </div>
+
+      <div class="footer-help">
+        Tip: Use +4 / +6 for fast scoring. "Wkt" will reset striker to a next batter.
+      </div>
+    </aside>
+  </div>
+
+  <script>
+    // Simple state model for scoreboard
+    const state = {
+      runs: 212,
+      wickets: 3,
+      balls: 4,  // represented as balls in current over (0-5) -> 4 means 4 balls = .4
+      oversComplete: 46, // 46.4 represented as oversComplete + '.' + balls
+      target: 300,
+      batsmen: [
+        { name: "R. Sharma", runs: 30, balls: 48 },
+        { name: "S. Gill", runs: 72, balls: 89 }
+      ],
+      strikerIndex: 0,
+      bowl: { name: "M. Bumrah", overs: 8.0, wkts: 2, runs: 45 },
+      partnership: { runs: 60, balls: 102 },
+      lastWkt: "K. Rahul c Smith b Starc 27 (40)",
+      matchType: "Test Match • Day 1",
+      venue: "Eden Gardens",
+      autoSim: null
+    };
+
+    // UI refs
+    const $ = id => document.getElementById(id);
+    function render() {
+      const totalOvers = state.oversComplete + Math.floor(state.balls/6);
+      const ballsInOver = state.balls % 6;
+      $('scoreRuns').textContent = `${state.runs}/${state.wickets}`;
+      $('scoreOvers').textContent = `${state.oversComplete}.${state.balls} ov`;
+      const crr = (state.runs / (state.oversComplete + state.balls/6 || 1)).toFixed(2);
+      $('scoreCRR').textContent = `CRR: ${isFinite(crr) ? crr : '0.00'}`;
+      $('scoreTeam').textContent = $('teamAName').textContent.slice(0,3).toUpperCase();
+
+      $('b1Name').textContent = state.batsmen[0].name;
+      $('b1Score').textContent = state.batsmen[0].runs;
+      $('b1Balls').textContent = state.batsmen[0].balls + 'b';
+      $('b1Meta').textContent = `${state.batsmen[0].runs} (${state.batsmen[0].balls})`;
+
+      $('b2Name').textContent = state.batsmen[1].name;
+      $('b2Score').textContent = state.batsmen[1].runs;
+      $('b2Balls').textContent = state.batsmen[1].balls + 'b';
+      $('b2Meta').textContent = `${state.batsmen[1].runs} (${state.batsmen[1].balls})`;
+
+      $('bowlName').textContent = state.bowl.name;
+      $('bowlOver').textContent = state.bowl.overs.toFixed(1);
+      $('bowlWkts').textContent = `${state.bowl.wkts} wkts • ${state.bowl.runs} runs`;
+
+      $('partnership').textContent = `${state.partnership.runs} (${state.partnership.balls})`;
+      $('lastWkt').textContent = state.lastWkt;
+
+      const runsNeeded = Math.max(0, state.target - state.runs);
+      // estimate overs left: using target overs 50 for simple
+      const oversLeft = Math.max(0, 50 - (state.oversComplete + state.balls/6)).toFixed(1);
+      $('needed').textContent = `${runsNeeded} runs in ${oversLeft} overs`;
+
+      $('statusText').textContent = state.matchType + ' • ' + state.venue;
     }
-</script>
 
+    // Helpers to add runs and balls
+    function addRuns(r) {
+      state.runs += r;
+      // add to striker
+      state.batsmen[state.strikerIndex].runs += r;
+      state.batsmen[state.strikerIndex].balls += 0; // runs don't add ball count except extras - keep simple
+      // swap on odd runs
+      if (r % 2 === 1) state.strikerIndex = 1 - state.strikerIndex;
+      render();
+    }
+
+    function addBall(n=1) {
+      // add n balls
+      for (let i=0;i<n;i++){
+        state.balls += 1;
+        state.batsmen[state.strikerIndex].balls += 1;
+        // each ball increases bowl overs
+        state.bowl.overs += 0.1; // we won't compute proper decimal overs here, we'll normalize below
+        // check over completion
+        if (state.balls >= 6) {
+          state.oversComplete += Math.floor(state.balls/6);
+          state.balls = state.balls % 6;
+          // typically strike rotates on over end
+          state.strikerIndex = 1 - state.strikerIndex;
+        }
+      }
+      render();
+    }
+
+    function wicket() {
+      state.wickets += 1;
+      // move striker to next player (simple: reset current striker)
+      const outName = state.batsmen[state.strikerIndex].name;
+      state.lastWkt = `${state.batsmen[state.strikerIndex].name} b ${state.bowl.name} ${state.batsmen[state.strikerIndex].runs} (${state.batsmen[state.strikerIndex].balls})`;
+      // new batsman
+      const newB = { name: `Batsman ${state.wickets+1}`, runs: 0, balls: 0 };
+      state.batsmen[state.strikerIndex] = newB;
+      state.strikerIndex = 0;
+      render();
+    }
+
+    // Buttons
+    $('add1').addEventListener('click', ()=>{ addRuns(1); addBall(1); });
+    $('add2').addEventListener('click', ()=>{ addRuns(2); addBall(1); });
+    $('add3').addEventListener('click', ()=>{ addRuns(3); addBall(1); });
+    $('add4').addEventListener('click', ()=>{ addRuns(4); addBall(1); });
+    $('add6').addEventListener('click', ()=>{ addRuns(6); addBall(1); });
+    $('wkt').addEventListener('click', ()=>{ wicket(); addBall(1); });
+
+    $('addBall').addEventListener('click', ()=>{
+      const n = parseInt($('ballsInput').value) || 1;
+      addBall(n);
+    });
+
+    $('reset').addEventListener('click', ()=>{
+      // reset to initial sample
+      state.runs = 0;
+      state.wickets = 0;
+      state.balls = 0;
+      state.oversComplete = 0;
+      state.batsmen = [
+        { name: "R. Sharma", runs: 0, balls: 0 },
+        { name: "S. Gill", runs: 0, balls: 0 }
+      ];
+      state.bowl = { name: "M. Bumrah", overs: 0.0, wkts: 0, runs: 0 };
+      state.partnership = { runs: 0, balls: 0 };
+      state.lastWkt = "—";
+      render();
+    });
+
+    $('randomize').addEventListener('click', ()=>{
+      const listA = ['Rohit Sharma','Virat Kohli','Shubman Gill','Shreyas Iyer','KL Rahul','Suryakumar Yadav'];
+      const listB = ['Babar Azam','Fakhar Zaman','Shaheen Afridi','Mohammad Rizwan','Sarfraz','Hassan Ali'];
+      function pick(a){ return a[Math.floor(Math.random()*a.length)]; }
+      $('teamAName').textContent = pick(listA);
+      $('teamBName').textContent = pick(listB);
+      $('flagA').textContent = '🇮🇳';
+      $('flagB').textContent = '🇵🇰';
+      render();
+    });
+
+    $('swap').addEventListener('click', ()=>{
+      // swap team names and flags
+      const aName = $('teamAName').textContent;
+      const bName = $('teamBName').textContent;
+      const aFlag = $('flagA').textContent;
+      const bFlag = $('flagB').textContent;
+      $('teamAName').textContent = bName;
+      $('teamBName').textContent = aName;
+      $('flagA').textContent = bFlag;
+      $('flagB').textContent = aFlag;
+      render();
+    });
+
+    // Simulation controls
+    $('simToggle').addEventListener('click', ()=>{
+      if (!state.autoSim) {
+        startSim();
+        $('simToggle').textContent = 'Stop Auto Sim';
+      } else {
+        stopSim();
+        $('simToggle').textContent = 'Start Auto Sim';
+      }
+    });
+
+    $('simStep').addEventListener('click', ()=> simStep());
+
+    function simStep(){
+      // random event: 0-6 runs or wicket or dot
+      const p = Math.random();
+      if (p < 0.06) { // wicket
+        wicket();
+      } else if (p < 0.16) { addRuns(6); }
+      else if (p < 0.3) { addRuns(4); }
+      else if (p < 0.6) { addRuns(1); }
+      else if (p < 0.78) { addRuns(2); }
+      else if (p < 0.92) { addRuns(3); }
+      else { addBall(1); } // dot ball
+      // every step add a ball too unless runs already added ball inside addRuns+addBall calls
+      render();
+    }
+
+    function startSim(){
+      state.autoSim = setInterval(()=> {
+        simStep();
+        // small UI updates like wicket/partnership
+        state.partnership.runs = state.runs - 150; // faked example
+        if (state.partnership.runs < 0) state.partnership.runs = 0;
+      }, 900);
+    }
+    function stopSim(){
+      clearInterval(state.autoSim);
+      state.autoSim = null;
+    }
+
+    // Init render
+    // set initial team names if empty
+    if (!$('teamAName').textContent) $('teamAName').textContent = "India";
+    if (!$('teamBName').textContent) $('teamBName').textContent = "Pakistan";
+    render();
+
+    // Accessibility: keyboard shortcuts for quick scoring (1-6, w for wicket, space toggles sim)
+    document.addEventListener('keydown', (e)=>{
+      const key = e.key.toLowerCase();
+      if (['1','2','3','4','5','6'].includes(key)) {
+        const runs = parseInt(key,10);
+        addRuns(runs);
+        addBall(1);
+      } else if (key === 'w') {
+        wicket(); addBall(1);
+      } else if (key === ' ') {
+        if (!state.autoSim) { startSim(); $('simToggle').textContent='Stop Auto Sim' }
+        else { stopSim(); $('simToggle').textContent='Start Auto Sim' }
+      }
+    });
+
+    const svg = document.querySelector('.background-svg');
+    const numPaths = 36;
+    function makePath(i, position) {
+      const d = `M${380 - i * 5 * position} ${189 + i * 6}C${380 - i * 5 * position} ${189 + i * 6} ${312 - i * 5 * position} ${216 - i * 6} ${152 - i * 5 * position} ${343 - i * 6}C${616 - i * 5 * position} ${470 - i * 6} ${684 - i * 5 * position} ${875 - i * 6} ${684 - i * 5 * position} ${875 - i * 6}`;
+      const color = `rgba(15,23,42,${0.1 + i * 0.03})`;
+      const width = 0.5 + i * 0.03;
+      const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+      path.setAttribute('d', d);
+      path.setAttribute('stroke', color);
+      path.setAttribute('stroke-width', width);
+      path.setAttribute('fill', 'none');
+      path.setAttribute('stroke-opacity', 0.1 + i * 0.03);
+      return path;
+    }
+    // Add both sets of paths
+    for (let position of [1, -1]) {
+      for (let i = 0; i < numPaths; i++) {
+        const path = makePath(i, position);
+        svg.appendChild(path);
+        // Animate path opacity and stroke-dashoffset for floating effect
+        const totalLength = path.getTotalLength();
+        path.style.strokeDasharray = totalLength;
+        path.style.strokeDashoffset = totalLength * 0.7;
+        path.animate([
+          { strokeDashoffset: totalLength * 0.7, opacity: 0.6 },
+          { strokeDashoffset: 0, opacity: 0.3 },
+          { strokeDashoffset: totalLength * 0.7, opacity: 0.6 }
+        ], {
+          duration: 20000 + Math.random() * 10000,
+          iterations: Infinity,
+          easing: 'linear'
+        });
+      }
+    }
+  </script>
 </body>
 </html>
