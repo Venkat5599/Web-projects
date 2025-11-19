@@ -1,1 +1,271 @@
-<!DOCTYPE html><html lang='en'><head><meta charset='UTF-8'><meta name='viewport' content='width=device-width, initial-scale=1.0'><title>Cricket Live Scoreboard</title><style>body{background:#101624;color:#fff;font-family:'Segoe UI',Arial,sans-serif;margin:0;}.header{background:#182033;padding:24px 0 12px 0;text-align:center;}.header .match{font-size:1.1em;color:#b0b8c9;}.header .score{font-size:2.5em;font-weight:bold;margin:10px 0 0 0;display:flex;align-items:center;justify-content:center;gap:16px;}.header .score .flag{font-size:1.5em;}.header .score .team{font-size:1.1em;font-weight:600;margin-right:8px;}.header .score .runs{font-size:1.2em;font-weight:700;}.header .score .overs{font-size:0.8em;color:#b0b8c9;margin-left:8px;}.header .crr{color:#b0b8c9;font-size:1em;margin-top:6px;}.header .status{color:#f7c873;font-size:1em;margin-top:2px;}.main{max-width:1100px;margin:0 auto;padding:24px 12px;}.row{display:flex;flex-wrap:wrap;gap:24px;}.left,.right{flex:1;min-width:320px;}.cards{display:flex;gap:18px;margin-bottom:18px;}.card{background:#1c2333;border-radius:10px;padding:18px 16px;flex:1;display:flex;align-items:center;gap:12px;min-width:120px;}.card .info{flex:1;}.card .name{font-weight:600;font-size:1.1em;}.card .stat{font-size:1.2em;font-weight:700;}.card .sub{font-size:0.9em;color:#b0b8c9;}.card .bat{color:#f7c873;font-size:1.2em;}.card .ball{color:#4fd1c5;font-size:1.2em;}.partnership,.last-wkt{color:#b0b8c9;font-size:1em;margin-bottom:8px;}.input-form{background:#232b3e;border-radius:10px;padding:18px 16px;margin-bottom:32px;}.input-form label{display:block;margin-top:12px;color:#b0b8c9;}.input-form input,.input-form select{width:100%;padding:7px;margin-top:3px;border-radius:4px;border:1px solid #444;background:#181e2a;color:#fff;}.input-form .section-title{color:#fff;font-weight:600;margin-top:18px;}.input-form .btn{background:#4fd1c5;color:#101624;border:none;padding:10px 18px;border-radius:4px;cursor:pointer;margin-top:18px;font-weight:600;font-size:1.1em;}.input-form .btn:hover{background:#38b2ac;}@media(max-width:900px){.row{flex-direction:column;}}</style></head><body><div class='main'><div class='header'><div class='match'> Vs , Test Match Live</div><div class='score><span class='flag'>🇵🇰</span><span class='team'></span><span class='runs'>-2127311280-0</span><span class='overs'>0</span></div><div class='crr'>CRR : 0</div><div class='status'> </div></div><div class='row'><div class='left'><div class='cards'><div class='card'><div class='info'><div class='name'></div><div class='stat'>6422004 <span class='sub'>(0)</span></div></div></div><div class='card'><div class='info'><div class='name'></div><div class='stat'>6422004 <span class='sub'>(0)</span> <span class='bat'>&#x1F3CF;</span></div></div></div><div class='card'><div class='info'><div class='name'></div><div class='stat'>0-0 <span class='sub'>(0)</span> <span class='ball'>&#x26BE;</span></div></div></div></div><div class='partnership'>P'ship : 22(52) &nbsp; Last Wkt : <span style='color:#4fd1c5;cursor:pointer;'>Last Wicket Info</span></div><div style='background:#1c2333;border-radius:10px;padding:18px 16px;margin:18px 0;font-size:1.2em;'><b>Target:</b> 0 &nbsp; <b>Runs Needed:</b> 2127311280 in 0 balls</div></div><div class='right'></div></div></div></body></html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cricket Live Scoreboard</title>
+
+    <style>
+        body {
+            background: #101624;
+            color: #fff;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            margin: 0;
+        }
+
+        .header {
+            background: #182033;
+            padding: 24px 0 12px 0;
+            text-align: center;
+        }
+
+        .header .match {
+            font-size: 1.1em;
+            color: #b0b8c9;
+        }
+
+        .header .score {
+            font-size: 2.5em;
+            font-weight: bold;
+            margin: 10px 0 0 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+        }
+
+        .header .score .flag {
+            font-size: 1.5em;
+        }
+
+        .header .score .team {
+            font-size: 1.1em;
+            font-weight: 600;
+            margin-right: 8px;
+        }
+
+        .header .score .runs {
+            font-size: 1.2em;
+            font-weight: 700;
+        }
+
+        .header .score .overs {
+            font-size: 0.8em;
+            color: #b0b8c9;
+            margin-left: 8px;
+        }
+
+        .header .crr {
+            color: #b0b8c9;
+            font-size: 1em;
+            margin-top: 6px;
+        }
+
+        .header .status {
+            color: #f7c873;
+            font-size: 1em;
+            margin-top: 2px;
+        }
+
+        .main {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 24px 12px;
+        }
+
+        .row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 24px;
+        }
+
+        .left,
+        .right {
+            flex: 1;
+            min-width: 320px;
+        }
+
+        .cards {
+            display: flex;
+            gap: 18px;
+            margin-bottom: 18px;
+        }
+
+        .card {
+            background: #1c2333;
+            border-radius: 10px;
+            padding: 18px 16px;
+            flex: 1;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            min-width: 120px;
+        }
+
+        .card .info {
+            flex: 1;
+        }
+
+        .card .name {
+            font-weight: 600;
+            font-size: 1.1em;
+        }
+
+        .card .stat {
+            font-size: 1.2em;
+            font-weight: 700;
+        }
+
+        .card .sub {
+            font-size: 0.9em;
+            color: #b0b8c9;
+        }
+
+        .card .bat {
+            color: #f7c873;
+            font-size: 1.2em;
+        }
+
+        .card .ball {
+            color: #4fd1c5;
+            font-size: 1.2em;
+        }
+
+        .partnership,
+        .last-wkt {
+            color: #b0b8c9;
+            font-size: 1em;
+            margin-bottom: 8px;
+        }
+
+        .input-form {
+            background: #232b3e;
+            border-radius: 10px;
+            padding: 18px 16px;
+            margin-bottom: 32px;
+        }
+
+        .input-form label {
+            display: block;
+            margin-top: 12px;
+            color: #b0b8c9;
+        }
+
+        .input-form input,
+        .input-form select {
+            width: 100%;
+            padding: 7px;
+            margin-top: 3px;
+            border-radius: 4px;
+            border: 1px solid #444;
+            background: #181e2a;
+            color: #fff;
+        }
+
+        .input-form .section-title {
+            color: #fff;
+            font-weight: 600;
+            margin-top: 18px;
+        }
+
+        .input-form .btn {
+            background: #4fd1c5;
+            color: #101624;
+            border: none;
+            padding: 10px 18px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 18px;
+            font-weight: 600;
+            font-size: 1.1em;
+        }
+
+        .input-form .btn:hover {
+            background: #38b2ac;
+        }
+
+        @media (max-width: 900px) {
+            .row {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="main">
+
+        <div class="header">
+            <div class="match"> Vs , Test Match Live</div>
+
+            <div class="score">
+                <span class="flag">🇵🇰</span>
+                <span class="team"></span>
+                <span class="runs">-2127311280-0</span>
+                <span class="overs">0</span>
+            </div>
+
+            <div class="crr">CRR : 0</div>
+            <div class="status"> </div>
+        </div>
+
+        <div class="row">
+
+            <div class="left">
+
+                <div class="cards">
+                    <div class="card">
+                        <div class="info">
+                            <div class="name"></div>
+                            <div class="stat">
+                                6422004 <span class="sub">(0)</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="info">
+                            <div class="name"></div>
+                            <div class="stat">
+                                6422004 <span class="sub">(0)</span>
+                                <span class="bat">&#x1F3CF;</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="info">
+                            <div class="name"></div>
+                            <div class="stat">
+                                0-0 <span class="sub">(0)</span>
+                                <span class="ball">&#x26BE;</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="partnership">
+                    P'ship : 22(52) &nbsp; Last Wkt :
+                    <span style="color:#4fd1c5; cursor:pointer;">Last Wicket Info</span>
+                </div>
+
+                <div style="
+                    background:#1c2333;
+                    border-radius:10px;
+                    padding:18px 16px;
+                    margin:18px 0;
+                    font-size:1.2em;
+                ">
+                    <b>Target:</b> 0 &nbsp;
+                    <b>Runs Needed:</b> 2127311280 in 0 balls
+                </div>
+
+            </div>
+
+            <div class="right"></div>
+
+        </div>
+
+    </div>
+</body>
+</html>
