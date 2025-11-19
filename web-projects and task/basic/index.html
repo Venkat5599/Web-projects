@@ -259,93 +259,97 @@
     /* Mobile: stack everything, reduce padding, font, button size */
     @media (max-width:600px) {
       body {
-        padding: 8px;
+        padding: 8px !important;
+        display: block !important;
+        align-items: initial !important;
+        justify-content: initial !important;
       }
       .wrap {
-        grid-template-columns: 1fr;
-        gap: 10px;
-        padding: 0;
+        grid-template-columns: 1fr !important;
+        gap: 10px !important;
+        padding: 0 !important;
+        max-width: 100vw !important;
       }
       .board, .controls {
-        padding: 10px;
-        border-radius: 8px;
+        padding: 10px !important;
+        border-radius: 8px !important;
       }
       .header {
-        flex-direction: column;
-        gap: 10px;
-        margin-bottom: 8px;
+        flex-direction: column !important;
+        gap: 10px !important;
+        margin-bottom: 8px !important;
       }
       .teams {
-        gap: 6px;
+        gap: 6px !important;
       }
       .flag {
-        width: 36px;
-        height: 36px;
-        font-size: 18px;
+        width: 36px !important;
+        height: 36px !important;
+        font-size: 18px !important;
       }
       .score-row {
-        gap: 10px;
+        gap: 10px !important;
       }
       .runs {
-        font-size: 2rem;
+        font-size: 2rem !important;
       }
       .grid {
-        grid-template-columns: 1fr;
-        gap: 8px;
+        grid-template-columns: 1fr !important;
+        gap: 8px !important;
       }
       .card {
-        flex-direction: column;
-        gap: 6px;
-        padding: 8px;
+        flex-direction: column !important;
+        gap: 6px !important;
+        padding: 8px !important;
       }
       .stat {
-        min-width: 70px;
-        font-size: 1rem;
+        min-width: 70px !important;
+        font-size: 1rem !important;
       }
       .target {
-        flex-direction: column;
-        gap: 8px;
-        font-size: 0.95rem;
+        flex-direction: column !important;
+        gap: 8px !important;
+        font-size: 0.95rem !important;
       }
       .btn-row, .control-row, .footer-help {
-        flex-direction: column;
-        gap: 6px;
-        align-items: stretch;
+        flex-direction: column !important;
+        gap: 6px !important;
+        align-items: stretch !important;
       }
       button.btn, button.alt {
-        font-size: 0.95rem;
-        padding: 7px 10px;
+        font-size: 0.95rem !important;
+        padding: 7px 10px !important;
       }
       .controls h3 {
-        font-size: 1rem;
+        font-size: 1rem !important;
       }
       .main-title {
-        font-size: 2rem;
+        font-size: 2rem !important;
       }
     }
 
     @media (max-width:480px) {
       .main-title {
-        font-size: 1.3rem;
+        font-size: 1.3rem !important;
       }
       .board, .controls {
-        padding: 6px;
+        padding: 6px !important;
       }
       .flag {
-        width: 28px;
-        height: 28px;
-        font-size: 14px;
+        width: 28px !important;
+        height: 28px !important;
+        font-size: 14px !important;
       }
       .runs {
-        font-size: 1.3rem;
+        font-size: 1.3rem !important;
       }
       .stat {
-        min-width: 50px;
-        font-size: 0.9rem;
+        min-width: 50px !important;
+        font-size: 0.9rem !important;
       }
       button.btn, button.alt {
-        font-size: 0.85rem;
-        padding: 5px 8px;
+        font-size: 0.85rem !important;
+        padding: 5px 8px !important;
       }
     }
 
